@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🌲 Running Two-Pines automated test gate..."
+npm run test:run && npm run lint
