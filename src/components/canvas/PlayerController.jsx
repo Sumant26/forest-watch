@@ -61,6 +61,22 @@ export function PlayerController() {
 
   // Setup Keyboard and Pointer Lock listeners
   useEffect(() => {
+    const handleStairTrigger = () => {
+      if (playerPos.current.y <= -4.0) {
+        // Ascend stairs from base
+        isAutoClimbing.current = true
+        autoClimbProgress.current = 0
+        autoClimbDirection.current = 1
+        soundEngine.playFootstep('wood')
+      } else {
+        // Descend stairs from deck
+        isAutoClimbing.current = true
+        autoClimbProgress.current = 1
+        autoClimbDirection.current = -1
+        soundEngine.playFootstep('wood')
+      }
+    }
+
     const handleKeyDown = (e) => {
       if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return
 
@@ -104,13 +120,13 @@ export function PlayerController() {
           break
         case 'KeyE':
           // Contextual Action: Climb Stairs or Open Radio
-          if (playerPos.current.z > 2.0 && playerPos.current.z < 6.0 && playerPos.current.y <= -6.0) {
+          if (playerPos.current.y <= -5.0 && (playerPos.current.z <= 7.0 || Math.hypot(playerPos.current.x - (-1.2), playerPos.current.z - 3.8) < 4.5)) {
             // Ascend stairs
             isAutoClimbing.current = true
             autoClimbProgress.current = 0
             autoClimbDirection.current = 1
             soundEngine.playFootstep('wood')
-          } else if (playerPos.current.y >= -1.0 && playerPos.current.z >= 1.5 && Math.abs(playerPos.current.x) <= 2.8) {
+          } else if (playerPos.current.y >= -1.5 && (playerPos.current.z >= 1.0 || Math.hypot(playerPos.current.x - (-2.2), playerPos.current.z - (-2.2)) < 3.5)) {
             // Descend stairs
             isAutoClimbing.current = true
             autoClimbProgress.current = 1
@@ -169,12 +185,14 @@ export function PlayerController() {
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('keyup', handleKeyUp)
     window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('trigger-stair-climb', handleStairTrigger)
     document.addEventListener('pointerlockchange', handlePointerLockChange)
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('trigger-stair-climb', handleStairTrigger)
       document.removeEventListener('pointerlockchange', handlePointerLockChange)
     }
   }, [gl.domElement, cameraMode, setCameraMode, setLookAngles, openRadio])
@@ -183,7 +201,7 @@ export function PlayerController() {
   useFrame((state, delta) => {
     // Handle Auto-Climbing Stairs smoothly
     if (isAutoClimbing.current) {
-      const climbSpeed = 0.45 * delta
+      const climbSpeed = 0.65 * delta
       autoClimbProgress.current += autoClimbDirection.current * climbSpeed
 
       if (autoClimbProgress.current >= 1.0) {
@@ -207,7 +225,7 @@ export function PlayerController() {
         playerPos.current.lerpVectors(p1, p2, frac)
 
         // Footstep sounds while climbing
-        footstepTimer.current += delta * 3.5
+        footstepTimer.current += delta * 4.2
         if (footstepTimer.current > 1.0) {
           footstepTimer.current = 0
           soundEngine.playFootstep('wood')
@@ -217,6 +235,30 @@ export function PlayerController() {
 
       setPosition([playerPos.current.x, playerPos.current.y, playerPos.current.z])
       setMovementState(true, false)
+
+      // Direct Camera Positioning during climbing
+      const azRad = THREE.MathUtils.degToRad(azimuth)
+      if (cameraMode === CAMERA_MODES.FIRST_PERSON) {
+        const eyeY = playerPos.current.y + 1.6
+        camera.position.set(playerPos.current.x, eyeY, playerPos.current.z)
+        const lookTarget = new THREE.Vector3(
+          playerPos.current.x + Math.sin(azRad) * 10,
+          eyeY,
+          playerPos.current.z - Math.cos(azRad) * 10
+        )
+        camera.lookAt(lookTarget)
+        camera.fov = 62
+        camera.updateProjectionMatrix()
+      } else if (cameraMode === CAMERA_MODES.THIRD_PERSON) {
+        const followDist = 3.0
+        const camX = playerPos.current.x - Math.sin(azRad) * followDist
+        const camZ = playerPos.current.z + Math.cos(azRad) * followDist
+        const camY = playerPos.current.y + 1.8
+        camera.position.set(camX, camY, camZ)
+        camera.lookAt(playerPos.current.x, playerPos.current.y + 1.1, playerPos.current.z)
+        camera.fov = 55
+        camera.updateProjectionMatrix()
+      }
       return
     }
 
@@ -295,15 +337,18 @@ export function PlayerController() {
       camera.fov = 62
       camera.updateProjectionMatrix()
     } else if (cameraMode === CAMERA_MODES.THIRD_PERSON) {
-      const followDist = 3.2
-      const followHeight = 1.9
-      const camX = playerPos.current.x - Math.sin(azRad) * followDist
-      const camZ = playerPos.current.z + Math.cos(azRad) * followDist
-      const camY = playerPos.current.y + followHeight
+      const pitchRad = THREE.MathUtils.degToRad(pitch)
+      const dist = 3.4
+      const horizontalDist = dist * Math.cos(pitchRad)
+      const verticalOffset = 1.4 + dist * Math.sin(pitchRad)
+
+      const camX = playerPos.current.x - Math.sin(azRad) * horizontalDist
+      const camZ = playerPos.current.z + Math.cos(azRad) * horizontalDist
+      const camY = playerPos.current.y + Math.max(0.6, verticalOffset)
 
       const camTarget = new THREE.Vector3(
         playerPos.current.x,
-        playerPos.current.y + 1.2,
+        playerPos.current.y + 1.25,
         playerPos.current.z
       )
 

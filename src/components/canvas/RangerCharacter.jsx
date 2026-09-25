@@ -216,7 +216,7 @@ export function RangerCharacter({ isMoving, isSprinting }) {
       </group>
 
       {/* --- Left Arm with Rolled Sleeves, USFS Patch & Field Watch --- */}
-      <group ref={leftArmRef} position={[-0.28, 1.15, 0]}>
+      <group ref={leftArm} position={[-0.28, 1.15, 0]}>
         {/* Shoulder / Upper Arm */}
         <mesh position={[0, -0.16, 0]} castShadow>
           <boxGeometry args={[0.13, 0.32, 0.14]} />
@@ -240,7 +240,7 @@ export function RangerCharacter({ isMoving, isSprinting }) {
       </group>
 
       {/* --- Right Arm with Rolled Sleeves --- */}
-      <group ref={rightArmRef} position={[0.28, 1.15, 0]}>
+      <group ref={rightArm} position={[0.28, 1.15, 0]}>
         <mesh position={[0, -0.16, 0]} castShadow>
           <boxGeometry args={[0.13, 0.32, 0.14]} />
           <meshStandardMaterial color="#c28c46" />
@@ -252,7 +252,7 @@ export function RangerCharacter({ isMoving, isSprinting }) {
       </group>
 
       {/* --- Left Leg with Cargo Pants & Hiking Boot --- */}
-      <group ref={leftLegRef} position={[-0.13, 0.6, 0]}>
+      <group ref={leftLeg} position={[-0.13, 0.6, 0]}>
         {/* Trousers */}
         <mesh position={[0, -0.3, 0]} castShadow>
           <boxGeometry args={[0.16, 0.58, 0.18]} />
@@ -283,7 +283,7 @@ export function RangerCharacter({ isMoving, isSprinting }) {
       </group>
 
       {/* --- Right Leg with Cargo Pants & Hiking Boot --- */}
-      <group ref={rightLegRef} position={[0.13, 0.6, 0]}>
+      <group ref={rightLeg} position={[0.13, 0.6, 0]}>
         <mesh position={[0, -0.3, 0]} castShadow>
           <boxGeometry args={[0.16, 0.58, 0.18]} />
           <meshStandardMaterial color="#382d24" roughness={0.9} />
