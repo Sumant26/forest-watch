@@ -1,5 +1,5 @@
 import React from 'react'
-import { Map, X, Compass, Navigation } from 'lucide-react'
+import { Map, X, Navigation } from 'lucide-react'
 import { usePlayerStore } from '../../stores/usePlayerStore'
 import { useCameraStore } from '../../stores/useCameraStore'
 

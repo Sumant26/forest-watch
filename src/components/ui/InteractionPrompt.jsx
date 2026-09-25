@@ -7,16 +7,13 @@ import { useStoryStore } from '../../stores/useStoryStore'
 export function InteractionPrompt() {
   const cameraMode = useCameraStore((state) => state.mode)
   const position = usePlayerStore((state) => state.position)
-  const isMoving = usePlayerStore((state) => state.isMoving)
   const currentChapter = useStoryStore((state) => state.getCurrentChapter())
-  const completedObjectives = useStoryStore((state) => state.completedObjectives)
+  const openRadio = useStoryStore((state) => state.openRadio)
 
   // Show only in FPS or 3rd Person view
   if (cameraMode !== CAMERA_MODES.FIRST_PERSON && cameraMode !== CAMERA_MODES.THIRD_PERSON) {
     return null
   }
-
-  const openRadio = useStoryStore((state) => state.openRadio)
 
   // Determine contextual guide based on player position & active chapter
   let promptText = 'WASD Move • Drag Look • [V] 3rd Person / FPS • [C] Cinematic'

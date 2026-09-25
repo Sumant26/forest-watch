@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Footprints, Home, Sparkles, Volume2, ArrowRight } from 'lucide-react'
+import { Footprints, Home, Volume2, ArrowRight } from 'lucide-react'
 import { useStoryStore } from '../../stores/useStoryStore'
 import { usePlayerStore } from '../../stores/usePlayerStore'
 import { useCameraStore, CAMERA_MODES } from '../../stores/useCameraStore'

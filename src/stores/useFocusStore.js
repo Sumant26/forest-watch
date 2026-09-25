@@ -51,7 +51,7 @@ export const useFocusStore = create(
       },
 
       tick: () => {
-        const { isRunning, secondsLeft, mode, completedSessions, durationMinutes } = get()
+        const { isRunning, secondsLeft, mode, completedSessions } = get()
         if (!isRunning) return
 
         if (secondsLeft > 1) {

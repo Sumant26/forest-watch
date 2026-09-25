@@ -6,7 +6,6 @@ import {
   Volume2,
   VolumeX,
   Radio,
-  CassetteTape,
   CloudRain,
   Wind,
   Flame,

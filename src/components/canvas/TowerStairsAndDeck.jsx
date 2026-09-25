@@ -61,16 +61,32 @@ export function TowerStairsAndDeck() {
 
   return (
     <group position={[0, 0, 0]}>
+      {/* --- Tower Mountain Granite Crags & Boulder Foundation (Images 3 & 5) --- */}
+      {[
+        [-2.4, -8.7, -2.4, 2.2],
+        [2.4, -8.7, -2.4, 2.4],
+        [-2.4, -8.7, 2.4, 2.1],
+        [2.4, -8.7, 2.4, 2.5],
+        [0.0, -8.8, 0.0, 3.2],
+        [-3.2, -8.6, 0.0, 1.8],
+        [3.2, -8.6, 0.0, 1.9]
+      ].map(([rx, ry, rz, rs], bIdx) => (
+        <mesh key={`tower-base-rock-${bIdx}`} position={[rx, ry, rz]} scale={[rs, rs * 0.6, rs]} castShadow receiveShadow>
+          <dodecahedronGeometry args={[0.9, 0]} />
+          <meshStandardMaterial color="#57534e" roughness={0.92} />
+        </mesh>
+      ))}
+
       {/* --- Tower Stone Foundation Piers at Ground Level --- */}
       {[
-        [-1.8, -8.8, -1.8],
-        [1.8, -8.8, -1.8],
-        [-1.8, -8.8, 1.8],
-        [1.8, -8.8, 1.8]
+        [-1.8, -8.7, -1.8],
+        [1.8, -8.7, -1.8],
+        [-1.8, -8.7, 1.8],
+        [1.8, -8.7, 1.8]
       ].map((pos, idx) => (
         <mesh key={`pier-${idx}`} position={pos} castShadow receiveShadow>
-          <boxGeometry args={[0.8, 0.7, 0.8]} />
-          <meshStandardMaterial color="#57534e" roughness={0.95} />
+          <boxGeometry args={[0.85, 0.8, 0.85]} />
+          <meshStandardMaterial color="#44403c" roughness={0.95} />
         </mesh>
       ))}
 

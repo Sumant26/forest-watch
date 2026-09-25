@@ -1,5 +1,5 @@
 import React from 'react'
-import { ZoomIn, ZoomOut, Camera, BookmarkCheck, CheckCircle2, Compass } from 'lucide-react'
+import { Camera, BookmarkCheck, CheckCircle2, Compass } from 'lucide-react'
 import { useCameraStore, CAMERA_MODES } from '../../stores/useCameraStore'
 import { useJournalStore } from '../../stores/useJournalStore'
 import { SIGHTINGS_DATA } from '../../data/sightingsData'

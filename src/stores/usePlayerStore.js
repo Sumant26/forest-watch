@@ -8,7 +8,7 @@ export const MOVEMENT_MODES = {
   SCOPE: 'scope'
 }
 
-export const usePlayerStore = create((set, get) => ({
+export const usePlayerStore = create((set) => ({
   // Position in world space
   // Prologue starts at the trailhead: [-12, -8.2, 48]
   position: [-12, -8.2, 48],

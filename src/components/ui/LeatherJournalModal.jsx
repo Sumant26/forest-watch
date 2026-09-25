@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   BookOpen,
   X,
@@ -8,9 +8,7 @@ import {
   Image as ImageIcon,
   CheckSquare,
   Plus,
-  Stamp,
-  Download,
-  Trash2
+  Download
 } from 'lucide-react'
 import { useJournalStore } from '../../stores/useJournalStore'
 import { useTimeWeatherStore } from '../../stores/useTimeWeatherStore'
@@ -31,7 +29,6 @@ export function LeatherJournalModal() {
   const updateNotes = useJournalStore((state) => state.updateNotes)
   const polaroids = useJournalStore((state) => state.polaroids)
 
-  const time = useTimeWeatherStore((state) => state.time)
   const weather = useTimeWeatherStore((state) => state.weather)
   const getFormattedTime = useTimeWeatherStore((state) => state.getFormattedTime)
 

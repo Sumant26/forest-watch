@@ -8,7 +8,6 @@ import {
   Pause,
   Radio,
   BookOpen,
-  Sliders,
   Timer,
   Settings,
   Eye,
@@ -28,7 +27,6 @@ import { useFocusStore } from '../../stores/useFocusStore'
 import { useSettingsStore } from '../../stores/useSettingsStore'
 
 export function HUDHeader() {
-  const time = useTimeWeatherStore((state) => state.time)
   const timeSpeed = useTimeWeatherStore((state) => state.timeSpeed)
   const isPaused = useTimeWeatherStore((state) => state.isPaused)
   const weather = useTimeWeatherStore((state) => state.weather)

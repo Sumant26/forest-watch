@@ -4,7 +4,6 @@ import { useCameraStore, CAMERA_MODES } from '../../stores/useCameraStore'
 
 export function VirtualJoystick() {
   const cameraMode = useCameraStore((state) => state.mode)
-  const position = usePlayerStore((state) => state.position)
   const setPosition = usePlayerStore((state) => state.setPosition)
   const setMovementState = usePlayerStore((state) => state.setMovementState)
   const azimuth = useCameraStore((state) => state.azimuth)

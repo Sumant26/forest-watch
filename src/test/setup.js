@@ -75,7 +75,7 @@ class MockAudioContext {
       stop: () => {}
     }
   }
-  createBuffer(channels, length, sampleRate) {
+  createBuffer(_channels, length, _sampleRate) {
     return {
       getChannelData: () => new Float32Array(length)
     }

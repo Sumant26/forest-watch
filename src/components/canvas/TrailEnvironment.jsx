@@ -15,9 +15,17 @@ export function TrailEnvironment() {
     { pos: [0, -8.65, 6], rot: [0, 0, 0], scale: [5.0, 0.05, 8] }
   ]
 
+  // Telegraph / Utility poles along the trail (Firewatch visual signature - Images 1 & 3)
+  const utilityPoles = [
+    { pos: [-14.5, -8.6, 44], rot: [0.05, 0.4, -0.04] },
+    { pos: [-7.5, -8.6, 32], rot: [-0.04, 0.2, 0.03] },
+    { pos: [-1.2, -8.6, 16], rot: [0.02, -0.3, 0.05] },
+    { pos: [4.2, -8.6, 4], rot: [0.04, 0.5, -0.02] }
+  ]
+
   return (
     <group position={[0, 0, 0]}>
-      {/* 4-Flight Tower Stairs */}
+      {/* 4-Flight Tower Stairs & Access Ladder */}
       <TowerStairsAndDeck />
 
       {/* --- Winding Dirt Trail Segments --- */}
@@ -67,6 +75,43 @@ export function TrailEnvironment() {
         ))}
       </group>
 
+      {/* --- Telegraph / Utility Poles with Hanging Telephone Wire (Images 1 & 3) --- */}
+      {utilityPoles.map((pole, pIdx) => (
+        <group key={`pole-${pIdx}`} position={pole.pos} rotation={pole.rot}>
+          {/* Main Wooden Pole */}
+          <mesh position={[0, 2.8, 0]} castShadow>
+            <cylinderGeometry args={[0.12, 0.16, 5.6, 8]} />
+            <meshStandardMaterial color="#3d2817" roughness={0.9} />
+          </mesh>
+          {/* Top Crossbar */}
+          <mesh position={[0, 5.1, 0]} rotation={[0, Math.PI / 2, 0]} castShadow>
+            <boxGeometry args={[1.4, 0.1, 0.1]} />
+            <meshStandardMaterial color="#2c1a0e" />
+          </mesh>
+          {/* Ceramic Insulators */}
+          {[-0.55, 0.55].map((ix, iIdx) => (
+            <mesh key={`ins-${iIdx}`} position={[ix, 5.22, 0]}>
+              <cylinderGeometry args={[0.03, 0.04, 0.12, 6]} />
+              <meshStandardMaterial color="#94a3b8" roughness={0.2} metalness={0.6} />
+            </mesh>
+          ))}
+        </group>
+      ))}
+
+      {/* Sagging Telegraph Wires Connecting Poles */}
+      <mesh position={[-11, -3.4, 38]} rotation={[0.42, 0.8, -0.15]}>
+        <cylinderGeometry args={[0.008, 0.008, 14.5, 4]} />
+        <meshBasicMaterial color="#1c1917" />
+      </mesh>
+      <mesh position={[-4.3, -3.4, 24]} rotation={[0.38, 0.5, -0.12]}>
+        <cylinderGeometry args={[0.008, 0.008, 16.5, 4]} />
+        <meshBasicMaterial color="#1c1917" />
+      </mesh>
+      <mesh position={[1.5, -3.4, 10]} rotation={[0.35, 0.35, -0.1]}>
+        <cylinderGeometry args={[0.008, 0.008, 13.5, 4]} />
+        <meshBasicMaterial color="#1c1917" />
+      </mesh>
+
       {/* --- Trail Directional Signs --- */}
       {/* Sign 1: Trailhead Start Sign */}
       <group position={[-10.5, -8.6, 46]} rotation={[0, 0.6, 0]}>
@@ -74,12 +119,10 @@ export function TrailEnvironment() {
           <cylinderGeometry args={[0.06, 0.06, 1.2, 8]} />
           <meshStandardMaterial color="#2d1a0e" />
         </mesh>
-        {/* Signboard */}
         <mesh position={[0, 1.0, 0]} castShadow>
           <boxGeometry args={[0.8, 0.35, 0.05]} />
           <meshStandardMaterial color="#543622" />
         </mesh>
-        {/* Sign Text Bar */}
         <mesh position={[0, 1.0, 0.03]}>
           <planeGeometry args={[0.7, 0.25]} />
           <meshBasicMaterial color="#d4a359" />
@@ -110,18 +153,25 @@ export function TrailEnvironment() {
         </mesh>
       </group>
 
-      {/* --- Wildflowers along the Trail (Fireweed & Lupine) --- */}
+      {/* --- Golden Prairie Grass Tufts & Lupine Wildflowers (Image 3) --- */}
       {[
-        [-10, -8.55, 44, '#d946ef'],
-        [-11.5, -8.55, 41, '#818cf8'],
-        [-6.5, -8.55, 36, '#facc15'],
-        [-3.2, -8.55, 32, '#d946ef'],
-        [-5.5, -8.55, 22, '#818cf8'],
-        [1.5, -8.55, 14, '#facc15'],
-        [-2.0, -8.55, 9, '#d946ef'],
-        [2.5, -8.55, 5, '#818cf8']
-      ].map(([x, y, z, color], idx) => (
+        [-10, -8.55, 44, '#d946ef', '#ca8a04'],
+        [-11.5, -8.55, 41, '#818cf8', '#d97706'],
+        [-6.5, -8.55, 36, '#facc15', '#b45309'],
+        [-3.2, -8.55, 32, '#d946ef', '#ca8a04'],
+        [-5.5, -8.55, 22, '#818cf8', '#d97706'],
+        [1.5, -8.55, 14, '#facc15', '#b45309'],
+        [-2.0, -8.55, 9, '#d946ef', '#ca8a04'],
+        [2.5, -8.55, 5, '#818cf8', '#d97706'],
+        [-0.5, -8.55, 3, '#facc15', '#eab308']
+      ].map(([x, y, z, color, grassCol], idx) => (
         <group key={`flower-patch-${idx}`} position={[x, y, z]}>
+          {/* Grass Tufts */}
+          <mesh position={[0, 0.15, 0]} rotation={[0, idx * 0.7, 0]}>
+            <coneGeometry args={[0.35, 0.45, 4]} />
+            <meshStandardMaterial color={grassCol} roughness={0.9} />
+          </mesh>
+          {/* Flower Stems */}
           {[
             [-0.2, 0.15, -0.1],
             [0.2, 0.18, 0.15],
@@ -135,38 +185,19 @@ export function TrailEnvironment() {
         </group>
       ))}
 
-      {/* --- Trail Stone Cairns (Stacked River Stones) --- */}
-      {[
-        [-9.5, -8.6, 45],
-        [-0.5, -8.6, 20]
-      ].map((pos, cIdx) => (
-        <group key={`cairn-${cIdx}`} position={pos}>
-          <mesh position={[0, 0.1, 0]} castShadow>
-            <dodecahedronGeometry args={[0.22, 0]} />
-            <meshStandardMaterial color="#64748b" roughness={0.9} />
-          </mesh>
-          <mesh position={[0, 0.28, 0]} castShadow>
-            <dodecahedronGeometry args={[0.16, 0]} />
-            <meshStandardMaterial color="#64748b" roughness={0.9} />
-          </mesh>
-          <mesh position={[0, 0.42, 0]} castShadow>
-            <dodecahedronGeometry args={[0.11, 0]} />
-            <meshStandardMaterial color="#78716c" roughness={0.9} />
-          </mesh>
-        </group>
-      ))}
-
-      {/* --- Trailside Rocks & Boulders --- */}
+      {/* --- Trailside Sunlit Boulders (Image 3) --- */}
       {[
         [-14, -8.4, 45, 1.8],
         [-9, -8.4, 32, 1.4],
         [2, -8.4, 22, 1.9],
         [-3.5, -8.4, 10, 1.6],
-        [3.5, -8.4, 2, 2.2]
+        [3.5, -8.4, 2, 2.6],
+        [-2.8, -8.4, 2.5, 2.2],
+        [1.8, -8.4, -1.0, 2.8]
       ].map(([x, y, z, s], idx) => (
-        <mesh key={`rock-${idx}`} position={[x, y, z]} scale={[s, s * 0.7, s]} castShadow receiveShadow>
-          <dodecahedronGeometry args={[0.8, 0]} />
-          <meshStandardMaterial color="#475569" roughness={0.9} />
+        <mesh key={`rock-${idx}`} position={[x, y, z]} scale={[s, s * 0.75, s]} castShadow receiveShadow>
+          <dodecahedronGeometry args={[0.85, 0]} />
+          <meshStandardMaterial color="#64748b" roughness={0.88} />
         </mesh>
       ))}
 
